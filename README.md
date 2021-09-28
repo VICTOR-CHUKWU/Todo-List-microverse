@@ -1,20 +1,20 @@
 
 
 # Project Name
-deploying my capstone project
+todo app
 
 > this project is a project on my porfolio
 
-![screenshot](screenshot.PNG)
+<!-- ![screenshot](screenshot.PNG) -->
 
 
 ## Live Demo
 
-[Live Demo Link](https://victor-chukwu.github.io/capstone-one/)
+<!-- [Live Demo Link](https://victor-chukwu.github.io/capstone-one/) -->
 
 ## Built With
-- html, scss
-- node, git, bootstrap
+- html, css
+- node, git, webpack
 
 To get a local copy up and running follow these simple example steps.
 
@@ -22,7 +22,7 @@ To get a local copy up and running follow these simple example steps.
 install git, node, any code editor in your local machine
 
 ### Setup
-clone the repo or download from https://github.com/VICTOR-CHUKWU/capstone-one
+clone the repo or download from https://github.com/VICTOR-CHUKWU/Todo-List-microverse
 
 ### Install
 install all dependencies with npm install
