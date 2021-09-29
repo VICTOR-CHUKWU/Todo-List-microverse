@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import _ from 'lodash';
+import checked from './checked.js';
 import './style.css';
 
 const displayTodos = document.querySelector('.todo-list-inner');
-
 const todoItem = [
   {
     description: 'cook food',
@@ -32,11 +32,20 @@ function displayTodo(featured) {
     display += `
      <div class="${completed ? 'red d-flex' : 'green d-flex'}">
      <input type="checkbox" name="" id="${index}" class='checkbox'>
-      <label for="${index}" class='label'>${description}</label>
+      <label for="${index}" class='label'>${description}<i class="fas fa-ellipsis-v icon"></i></label>
      </div>
      `;
   });
   displayTodos.innerHTML = display;
 }
-
 document.addEventListener('DOMContentLoaded', displayTodo(todoItem));
+
+checked();
+
+const localList = JSON.stringify(todoItem);
+
+localStorage.setItem('todoItem', localList);
+
+const getLocalList = JSON.parse(localStorage.getItem('todoItem'));
+
+getLocalList();
