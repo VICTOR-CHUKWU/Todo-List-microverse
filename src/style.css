@@ -46,13 +46,13 @@ h2 {
 }
 
 .enter {
- margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .d-flex {
   display: flex;
   align-items: center;
- flex-grow: 1;
+  flex-grow: 1;
   margin-top: 0.6rem;
   padding-bottom: 1.2rem;
   padding-left: 1rem;
