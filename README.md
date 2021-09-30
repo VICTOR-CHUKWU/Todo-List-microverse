@@ -5,7 +5,7 @@ todo app
 
 > this project is a project on my porfolio
 
-<!-- ![screenshot](screenshot.PNG) -->
+![screenshot](screenshot.PNG)
 
 
 ## Live Demo
