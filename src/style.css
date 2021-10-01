@@ -63,6 +63,17 @@ h2 {
   width: 100%;
 }
 
+.completed {
+  text-decoration: line-through;
+}
+
+.btn {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
 .label {
   font-size: 1.2rem;
   display: flex;
@@ -73,6 +84,7 @@ h2 {
 
 .icon {
   margin-right: 0.5rem;
+  margin-left: 1rem;
 }
 
 .checkbox {

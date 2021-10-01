@@ -1,51 +1,110 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-use-before-define */
+/* eslint-disable spaced-comment */
 // eslint-disable-next-line no-unused-vars
 import _ from 'lodash';
-import checked from './checked.js';
+// eslint-disable-next-line import/no-cycle
+// eslint-disable-next-line import/no-named-as-default
+import checkTodos from './checked.js';
 import './style.css';
 
 const displayTodos = document.querySelector('.todo-list-inner');
-const todoItem = [
-  {
-    description: 'cook food',
-    completed: false,
-    index: 0,
-  },
-  {
-    description: 'clean house',
-    completed: false,
-    index: 1,
-  },
-  {
-    description: 'write code',
-    completed: false,
-    index: 2,
-  },
-];
-// Lodash, now imported by this script
-function displayTodo(featured) {
+const todoInput = document.querySelector('.add-todo');
+const todoForm = document.querySelector('.todo');
+const clear = document.querySelector('.clear-completed');
+let todos = [];
+function addTodo(event) {
+  event.preventDefault();
+  console.log('bbb');
+  console.log(event);
+  saveLocalTodos({ description: todoInput.value, completed: false });
+  getTodos();
+  todoInput.value = '';
+}
+
+todoForm.addEventListener('submit', addTodo);
+
+function saveLocalTodos({ description, completed }) {
+  if (localStorage.getItem('todos') === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem('todos'));
+  }
+  todos.push({ description, completed });
+  localStorage.setItem('todos', JSON.stringify(todos));
+  // //  checkTodos()
+  // console.log(todos);
+}
+
+function getTodos() {
+  //to check if i already have a thing in there?
+  //  let todos;
+  if (localStorage.getItem('todos') === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem('todos'));
+  }
   let display = '';
-  // eslint-disable-next-line array-callback-return
-  featured.map((todo) => {
-    const {
-      description, completed, index,
-    } = todo;
+  todos.forEach((todo, index) => {
+    const check = todo.completed ? 'checked' : '';
+    const completed = todo.completed ? 'completed' : '';
     display += `
-     <div class="${completed ? 'red d-flex' : 'green d-flex'}">
-     <input type="checkbox" name="" id="${index}" class='checkbox'>
-      <label for="${index}" class='label'>${description}<i class="fas fa-ellipsis-v icon"></i></label>
-     </div>
-     `;
+    <div class="d-flex ${completed}" id="${index}">
+    <input type="checkbox" id="${index}"  class='checkbox' ${check}>
+     <label for="${index}" class='label'>${todo.description}</label>
+     <i class="fa fa-trash delete"></i><i class="fas fa-ellipsis-v icon"></i>
+    </div>
+    `;
   });
   displayTodos.innerHTML = display;
 }
-document.addEventListener('DOMContentLoaded', displayTodo(todoItem));
 
-checked();
+export default function removeLocalTodos(todo) {
+  if (localStorage.getItem('todos') === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem('todos'));
+  }
+  todos.splice(todo, 1);
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
 
-const localList = JSON.stringify(todoItem);
+export function completeLocalTodos(todo) {
+  if (localStorage.getItem('todos') === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem('todos'));
+  }
+  const me = todo.parentElement;
+  const answ = todos[me.id];
+  if (me.classList.contains('completed')) {
+    answ.completed = true;
+  } else {
+    answ.completed = false;
+  }
 
-localStorage.setItem('todoItem', localList);
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
 
-const getLocalList = JSON.parse(localStorage.getItem('todoItem'));
+export const editLocal = (todo) => {
+  if (localStorage.getItem('todos') === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem('todos'));
+  }
+  console.log('kkk');
+  const me = todos[todo];
+  todoInput.value = me.description;
+  me.description = todoInput.value;
+  localStorage.setItem('todos', JSON.stringify(todos));
+};
 
-getLocalList();
+const deleteItem = () => {
+  localStorage.clear();
+};
+
+displayTodos.addEventListener('click', checkTodos);
+
+clear.addEventListener('click', deleteItem);
+
+document.addEventListener('DOMContentLoaded', getTodos);
