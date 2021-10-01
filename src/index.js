@@ -73,6 +73,7 @@ export const editLocal = (todo) => {
 const clearCompletedTodo = () => {
   todos = todos.filter((item) => !item.completed === true);
   localStorage.setItem('todos', JSON.stringify(todos));
+  getTodos();
 };
 
 todoForm.addEventListener('submit', addTodo);
