@@ -99,4 +99,5 @@ h2 {
   background: rgb(243, 241, 241);
   height: 40px;
   font-size: 1.2rem;
+  cursor: pointer;
 }

@@ -15,8 +15,6 @@ const clear = document.querySelector('.clear-completed');
 let todos = [];
 function addTodo(event) {
   event.preventDefault();
-  console.log('bbb');
-  console.log(event);
   saveLocalTodos({ description: todoInput.value, completed: false });
   getTodos();
   todoInput.value = '';
@@ -32,8 +30,6 @@ function saveLocalTodos({ description, completed }) {
   }
   todos.push({ description, completed });
   localStorage.setItem('todos', JSON.stringify(todos));
-  // //  checkTodos()
-  // console.log(todos);
 }
 
 function getTodos() {
@@ -92,7 +88,6 @@ export const editLocal = (todo) => {
   } else {
     todos = JSON.parse(localStorage.getItem('todos'));
   }
-  console.log('kkk');
   const me = todos[todo];
   todoInput.value = me.description;
   me.description = todoInput.value;
@@ -100,7 +95,13 @@ export const editLocal = (todo) => {
 };
 
 const deleteItem = () => {
-  localStorage.clear();
+  if (localStorage.getItem('todos') === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem('todos'));
+  }
+  todos = todos.filter((item) => !item.completed === true);
+  localStorage.setItem('todos', JSON.stringify(todos));
 };
 
 displayTodos.addEventListener('click', checkTodos);
