@@ -7,7 +7,6 @@ function checkTodos(e) {
   // eslint-disable-next-line prefer-destructuring
   const id = todo.id;
 
-  // Delete todo
   if (item.classList.contains('delete')) {
     todo.style.display = 'none';
     removeLocalTodos(id);

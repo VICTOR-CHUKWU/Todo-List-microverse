@@ -1,10 +1,4 @@
 /* eslint-disable import/no-cycle */
-/* eslint-disable no-use-before-define */
-/* eslint-disable spaced-comment */
-// eslint-disable-next-line no-unused-vars
-import _ from 'lodash';
-// eslint-disable-next-line import/no-cycle
-// eslint-disable-next-line import/no-named-as-default
 import checkTodos from './checked.js';
 import './style.css';
 
@@ -13,16 +7,8 @@ const todoInput = document.querySelector('.add-todo');
 const todoForm = document.querySelector('.todo');
 const clear = document.querySelector('.clear-completed');
 let todos = [];
-function addTodo(event) {
-  event.preventDefault();
-  saveLocalTodos({ description: todoInput.value, completed: false });
-  getTodos();
-  todoInput.value = '';
-}
 
-todoForm.addEventListener('submit', addTodo);
-
-function saveLocalTodos({ description, completed }) {
+function saveLocalTodos({ description, completed = false }) {
   if (localStorage.getItem('todos') === null) {
     todos = [];
   } else {
@@ -33,8 +19,6 @@ function saveLocalTodos({ description, completed }) {
 }
 
 function getTodos() {
-  //to check if i already have a thing in there?
-  //  let todos;
   if (localStorage.getItem('todos') === null) {
     todos = [];
   } else {
@@ -55,22 +39,19 @@ function getTodos() {
   displayTodos.innerHTML = display;
 }
 
+function addTodo(event) {
+  event.preventDefault();
+  saveLocalTodos({ description: todoInput.value, completed: false });
+  getTodos();
+  todoInput.value = '';
+}
+
 export default function removeLocalTodos(todo) {
-  if (localStorage.getItem('todos') === null) {
-    todos = [];
-  } else {
-    todos = JSON.parse(localStorage.getItem('todos'));
-  }
   todos.splice(todo, 1);
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
 export function completeLocalTodos(todo) {
-  if (localStorage.getItem('todos') === null) {
-    todos = [];
-  } else {
-    todos = JSON.parse(localStorage.getItem('todos'));
-  }
   const me = todo.parentElement;
   const answ = todos[me.id];
   if (me.classList.contains('completed')) {
@@ -83,29 +64,21 @@ export function completeLocalTodos(todo) {
 }
 
 export const editLocal = (todo) => {
-  if (localStorage.getItem('todos') === null) {
-    todos = [];
-  } else {
-    todos = JSON.parse(localStorage.getItem('todos'));
-  }
   const me = todos[todo];
   todoInput.value = me.description;
   me.description = todoInput.value;
   localStorage.setItem('todos', JSON.stringify(todos));
 };
 
-const deleteItem = () => {
-  if (localStorage.getItem('todos') === null) {
-    todos = [];
-  } else {
-    todos = JSON.parse(localStorage.getItem('todos'));
-  }
+const clearCompletedTodo = () => {
   todos = todos.filter((item) => !item.completed === true);
   localStorage.setItem('todos', JSON.stringify(todos));
 };
 
+todoForm.addEventListener('submit', addTodo);
+
 displayTodos.addEventListener('click', checkTodos);
 
-clear.addEventListener('click', deleteItem);
+clear.addEventListener('click', clearCompletedTodo);
 
 document.addEventListener('DOMContentLoaded', getTodos);
