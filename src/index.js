@@ -5,7 +5,10 @@ import './style.css';
 const displayTodos = document.querySelector('.todo-list-inner');
 const todoInput = document.querySelector('.add-todo');
 const todoForm = document.querySelector('.todo');
+const editCancel = document.querySelector('.edit-cancel');
+
 const clear = document.querySelector('.clear-completed');
+let editId = null;
 let todos = [];
 
 function saveLocalTodos({ description, completed = false }) {
@@ -32,16 +35,35 @@ function getTodos() {
     <div class="d-flex ${completed}" id="${index}">
     <input type="checkbox" id="${index}"  class='checkbox' ${check}>
      <label for="${index}" class='label'>${todo.description}</label>
-     <i class="fa fa-trash delete"></i><i class="fas fa-ellipsis-v icon"></i>
+     <i class="fa fa-trash delete"></i><i class="fas fa-edit icon"></i>
     </div>
     `;
   });
   displayTodos.innerHTML = display;
 }
 
+export const editLocal = (todo) => {
+  editId = todo;
+  editCancel.classList.add('show');
+  const me = todos[todo];
+  todoInput.value = me.description;
+  todoInput.focus();
+};
+const saveEdit = (todo) => {
+  const me = todos[todo];
+  me.description = todoInput.value;
+  localStorage.setItem('todos', JSON.stringify(todos));
+};
+
 function addTodo(event) {
   event.preventDefault();
-  saveLocalTodos({ description: todoInput.value, completed: false });
+  if (editId != null) {
+    saveEdit(editId);
+    editId = null;
+    editCancel.classList.remove('show');
+  } else {
+    saveLocalTodos({ description: todoInput.value, completed: false });
+  }
   getTodos();
   todoInput.value = '';
 }
@@ -63,13 +85,6 @@ export function completeLocalTodos(todo) {
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
-export const editLocal = (todo) => {
-  const me = todos[todo];
-  todoInput.value = me.description;
-  me.description = todoInput.value;
-  localStorage.setItem('todos', JSON.stringify(todos));
-};
-
 const clearCompletedTodo = () => {
   todos = todos.filter((item) => !item.completed === true);
   localStorage.setItem('todos', JSON.stringify(todos));
@@ -77,6 +92,9 @@ const clearCompletedTodo = () => {
 };
 
 todoForm.addEventListener('submit', addTodo);
+editCancel.addEventListener('submit', () => {
+  editId = null;
+});
 
 displayTodos.addEventListener('click', checkTodos);
 
